@@ -2,6 +2,8 @@
 
 参考 [usaciv](https://karpathy.ai/usaciv/) 的产品思路，用真实公开数据绘制的中国版「文明」战略地图。地图不是一个 4X 游戏，而是一个可以浏览、比较和下钻的数据可视化：**金币 = GDP，粮食/生产/科技/文化 = 就业结构，城市城区 = 真实产业特色，奇观 = 按公开规则选出的国家公园、景区、大学与地标。**
 
+**在线版：** https://keshaoqin.github.io/jiuzhou-civ/ · **仓库：** https://github.com/keshaoqin/jiuzhou-civ
+
 > 这是独立实现：界面与交互代码基于 usaciv 的 MIT 源码改造，数据管线、行政区划、城市数据与中国主题设计为重新构建。原项目 © Andrej Karpathy，MIT License。
 
 ![九州首页](screenshots/home.jpg)
