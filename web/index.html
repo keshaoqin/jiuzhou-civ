@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>九州 · 中国文明地图</title>
+  <meta name="description" content="用真实公开数据绘制的中国文明地图：六边形地形、城市产出、19 种镜头、城市视图与顾问团。">
+  <meta name="theme-color" content="#101c24">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='2' y='2' width='60' height='60' rx='7' fill='%239e2f27' stroke='%23d9b46a' stroke-width='2'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' fill='%23f8ecd2' font-family='serif'%3E%E4%B9%9D%3C/text%3E%3C/svg%3E">
+  <!-- Social cards. Crawlers need absolute URLs: if you host your own copy, change https://jiuzhou.example/ to its address
+       (og:url, og:image, twitter:image, canonical). og-image.png is a 1200x630 render of the home view. -->
+  <link rel="canonical" href="https://jiuzhou.example/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="九州">
+  <meta property="og:title" content="九州：中国文明地图">
+  <meta property="og:description" content="用真实公开数据绘制的中国文明地图：六边形地形、城市产出、镜头与资源。">
+  <meta property="og:url" content="https://jiuzhou.example/">
+  <meta property="og:image" content="https://jiuzhou.example/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="中国六边形战略地图与城市横幅">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="九州：中国文明地图">
+  <meta name="twitter:description" content="用真实公开数据绘制的中国文明地图。">
+  <meta name="twitter:image" content="https://jiuzhou.example/og-image.png">
+  <meta name="twitter:image:alt" content="中国六边形战略地图与城市横幅">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header id="topbar">
+    <div class="brand" title="九州"><span class="brand-emblem" aria-hidden="true">九</span><span class="brand-text">九州</span><span class="brand-sub">中国文明地图</span></div>
+    <div id="yields" class="yields" aria-label="全国产出"></div>
+    <div class="spacer"></div>
+    <div class="search" role="search">
+      <span class="search-ic" aria-hidden="true"></span>
+      <input id="search-input" type="search" placeholder="搜索城市与省份" autocomplete="off" spellcheck="false"
+        role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-results" aria-label="搜索城市与省份（/ 或 Ctrl K）">
+      <kbd class="search-kbd" aria-hidden="true">/</kbd>
+    </div>
+    <div id="turn" class="turn"></div>
+    <div class="tb-buttons">
+      <button id="btn-share" class="btn" aria-haspopup="dialog" aria-expanded="false" aria-label="分享此视图" title="分享：复制链接或下载图片"></button>
+      <button id="btn-help" class="btn btn-icon" aria-label="键盘与鼠标帮助" title="帮助（?）"></button>
+      <button id="btn-pedia" class="btn" aria-label="打开图鉴" title="每个数字的含义与数据来源"></button>
+    </div>
+  </header>
+
+  <canvas id="map" role="img" aria-label="中国六边形战略地图"></canvas>
+
+  <div id="tooltip" class="tooltip" hidden></div>
+  <aside id="city-panel" class="panel" hidden role="region" aria-label="Details"></aside>
+
+  <div id="lens-area">
+    <div id="lens-picker" class="panel lens-picker" hidden role="dialog" aria-label="Choose a lens"></div>
+    <div id="legend" class="panel legend" hidden role="group" aria-label="Lens legend"></div>
+    <div id="lens-dock" class="panel lens-dock" role="toolbar" aria-label="地图镜头">
+      <button id="btn-res" class="lens-btn res-toggle" aria-pressed="true" aria-label="地图资源（R）" title="显示或隐藏地图资源（R）" hidden></button>
+      <div id="lens-quick" class="lens-quick"></div>
+      <button id="btn-lenses" class="lens-btn lens-more" aria-haspopup="dialog" aria-expanded="false" aria-controls="lens-picker"></button>
+    </div>
+  </div>
+
+  <div id="minimap-wrap" class="panel"><canvas id="minimap" aria-label="缩略图：点击跳转" role="img"></canvas></div>
+  <button id="btn-minimap" class="panel minimap-toggle" aria-pressed="false" aria-controls="minimap-wrap" aria-label="Show the minimap"></button>
+
+  <div id="search-results" class="panel search-results" role="listbox" aria-label="Search results" hidden></div>
+  <div id="share-pop" class="panel share-pop" role="dialog" aria-label="Share" hidden></div>
+  <div id="yield-report" class="panel yield-report" role="dialog" aria-label="National report" tabindex="-1" hidden></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <div id="announce" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <div id="pedia" class="modal" hidden>
+    <div class="modal-card panel" role="dialog" aria-modal="true" aria-label="Almanac">
+      <button class="close icon-btn" data-close aria-label="Close the Almanac">✕</button>
+      <nav id="pedia-nav" aria-label="Almanac pages"></nav>
+      <article id="pedia-body"></article>
+    </div>
+  </div>
+
+  <div id="help" class="modal" hidden>
+    <div class="help-card panel" role="dialog" aria-modal="true" aria-labelledby="help-title"></div>
+  </div>
+
+  <div id="loading">正在铺开九州…</div>
+  <script type="module" src="js/app/i18n.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
