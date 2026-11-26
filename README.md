@@ -4,9 +4,9 @@
 
 > 这是独立实现：界面与交互代码基于 usaciv 的 MIT 源码改造，数据管线、行政区划、城市数据与中国主题设计为重新构建。原项目 © Andrej Karpathy，MIT License。
 
-![九州首页](screenshots/home.png)
+![九州首页](screenshots/home.jpg)
 
-![北京城市视图](screenshots/cityview.png)
+![北京城市视图](screenshots/cityview.jpg)
 
 ## 快速开始
 
